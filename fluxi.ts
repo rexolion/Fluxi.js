@@ -1,17 +1,11 @@
 export class Dispatcher {
-    public events: object;
+    public events: any;
 
     constructor() {
         this.events = {};
     }
 
-    public addListener(event: string, callback) {
-
-        // Check for wrong types
-        if (callback !== "function") {
-            console.error("Your listener is not a function, it is a ${typeof callback}");
-            return false;
-        }
+    public addListener(event: string, callback: (data?: any) => any) {
 
         // Check and push event to listeners array
         if (this.events[event] === undefined) {
@@ -23,26 +17,22 @@ export class Dispatcher {
         this.events[event].listeners.push(callback);
     }
 
-    public removeListener(event: string, callback) {
+    public removeListener(event: string, callback: (data?: any) => any) {
 
         // Check for existing
-        if (this.events[event] === undefined) {
-            console.error("This event: ${event} does not exist");
-        }
+        if (this.events[event] === undefined) { throw Error; }
 
-        this.events[event].listeners = this.events[event].listeners.filter((listener) => {
+        this.events[event].listeners = this.events[event].listeners.filter((listener: string) => {
             return listener.toString() !== callback.toString();
         });
     }
 
-    public dispatch(event: string, details) {
+    public dispatch(event: string, data?: any) {
 
-        if (this.events[event] === undefined) {
-            console.error("This event: ${event} is undefined");
-        }
+        if (this.events[event] === undefined) { throw Error; }
 
-        this.events[event].listeners.forEach((listener) => {
-            listener(details);
+        this.events[event].listeners.forEach((listener: any) => {
+            listener(data);
 
         });
 

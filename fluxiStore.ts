@@ -19,11 +19,11 @@ export class Store extends EventEmitter {
         this.emit("change");
     }
 
-    public addChangeListener = (callback) => {
+    public addChangeListener = (callback: (data?: any) => any) => {
         this.on("change", callback);
     }
 
-    public removeChangeListener = (callback) => {
+    public removeChangeListener = (callback: (data?: any) => any) => {
         this.removeListener("change", callback);
     }
 
